@@ -15,6 +15,7 @@ export default function Inventory() {
   const [activeFilter, setActiveFilter] = useState('all')
   const [isListening, setIsListening] = useState(false)
   const [voiceText, setVoiceText] = useState('Listening... Speak your inventory updates')
+  const [mounted, setMounted] = useState(false)
 
   // Complete inventory from the original code
   const inventory = {
@@ -62,28 +63,31 @@ export default function Inventory() {
   }
 
   useEffect(() => {
-    // Initialize inventory data
-    const storedData = localStorage.getItem('inventoryData')
-    let initialData: InventoryData = {}
-    
-    if (storedData) {
-      initialData = JSON.parse(storedData)
-    }
-    
-    // Initialize any missing items
-    Object.keys(inventory).forEach(category => {
-      inventory[category as keyof typeof inventory].forEach(item => {
-        if (!initialData[item]) {
-          initialData[item] = {
-            bottles: 0,
-            ounces: 0,
-            category: category
+    setMounted(true)
+    // Initialize inventory data only on client
+    if (typeof window !== 'undefined') {
+      const storedData = localStorage.getItem('inventoryData')
+      let initialData: InventoryData = {}
+      
+      if (storedData) {
+        initialData = JSON.parse(storedData)
+      }
+      
+      // Initialize any missing items
+      Object.keys(inventory).forEach(category => {
+        inventory[category as keyof typeof inventory].forEach(item => {
+          if (!initialData[item]) {
+            initialData[item] = {
+              bottles: 0,
+              ounces: 0,
+              category: category
+            }
           }
-        }
+        })
       })
-    })
-    
-    setInventoryData(initialData)
+      
+      setInventoryData(initialData)
+    }
   }, [])
 
   const updateInventoryItem = (item: string, type: 'bottles' | 'ounces', value: number) => {
@@ -98,8 +102,10 @@ export default function Inventory() {
   }
 
   const saveInventory = () => {
-    localStorage.setItem('inventoryData', JSON.stringify(inventoryData))
-    alert('Inventory updated successfully!')
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('inventoryData', JSON.stringify(inventoryData))
+      alert('Inventory updated successfully!')
+    }
   }
 
   const toggleVoiceRecognition = () => {
@@ -115,6 +121,16 @@ export default function Inventory() {
   const filteredCategories = activeFilter === 'all' 
     ? Object.keys(inventory) 
     : [activeFilter]
+
+  if (!mounted) {
+    return (
+      <div className="inventory-bg min-h-screen p-6">
+        <div className="container mx-auto max-w-7xl">
+          <h2 className="text-3xl font-bold mb-8">Loading Inventory...</h2>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="inventory-bg min-h-screen p-6">

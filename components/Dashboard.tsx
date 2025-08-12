@@ -16,12 +16,16 @@ interface SpecialType {
 export default function Dashboard() {
   const [items86, setItems86] = useState<Item86[]>([])
   const [todaySpecial, setTodaySpecial] = useState<SpecialType | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Load 86'd items from localStorage
-    const stored86Items = localStorage.getItem('items86')
-    if (stored86Items) {
-      setItems86(JSON.parse(stored86Items))
+    setMounted(true)
+    // Load 86'd items from localStorage only on client
+    if (typeof window !== 'undefined') {
+      const stored86Items = localStorage.getItem('items86')
+      if (stored86Items) {
+        setItems86(JSON.parse(stored86Items))
+      }
     }
 
     // Set today's special based on day of week
@@ -64,6 +68,16 @@ export default function Dashboard() {
     }
 
     setTodaySpecial(specials[today] || null)
+  }
+
+  if (!mounted) {
+    return (
+      <div className="dashboard-bg min-h-screen p-6">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="text-3xl font-bold mb-8 text-center">Loading Dashboard...</h2>
+        </div>
+      </div>
+    )
   }
 
   return (

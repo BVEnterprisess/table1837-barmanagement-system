@@ -9,16 +9,20 @@ interface Item86 {
 export default function Staff() {
   const [items86, setItems86] = useState<Item86[]>([])
   const [newItem, setNewItem] = useState('')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const stored86Items = localStorage.getItem('items86')
-    if (stored86Items) {
-      setItems86(JSON.parse(stored86Items))
+    setMounted(true)
+    if (typeof window !== 'undefined') {
+      const stored86Items = localStorage.getItem('items86')
+      if (stored86Items) {
+        setItems86(JSON.parse(stored86Items))
+      }
     }
   }, [])
 
   const add86Item = () => {
-    if (newItem.trim()) {
+    if (newItem.trim() && typeof window !== 'undefined') {
       const newItems = [...items86, {
         name: newItem.trim(),
         timestamp: new Date().toLocaleString(),
@@ -31,9 +35,11 @@ export default function Staff() {
   }
 
   const remove86Item = (index: number) => {
-    const newItems = items86.filter((_, i) => i !== index)
-    setItems86(newItems)
-    localStorage.setItem('items86', JSON.stringify(newItems))
+    if (typeof window !== 'undefined') {
+      const newItems = items86.filter((_, i) => i !== index)
+      setItems86(newItems)
+      localStorage.setItem('items86', JSON.stringify(newItems))
+    }
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -41,6 +47,16 @@ export default function Staff() {
       e.preventDefault()
       add86Item()
     }
+  }
+
+  if (!mounted) {
+    return (
+      <div className="staff-bg min-h-screen p-6">
+        <div className="container mx-auto max-w-4xl">
+          <h2 className="text-3xl font-bold mb-8 text-center">Loading Staff...</h2>
+        </div>
+      </div>
+    )
   }
 
   return (
