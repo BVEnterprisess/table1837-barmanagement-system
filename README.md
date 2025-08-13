@@ -1,9 +1,14 @@
-# Table 1837 - Bar Management System
+# Table 1837 Tavern - Bar Management System
 
 🍷 **Professional bar management system for Table 1837 at Glen Rock Mill Inn**
 
 [![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/BVEnterprisess/table1837-barmanagement-system)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/BVEnterprisess/table1837-barmanagement-system)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## 🌐 Production URL
+**Live Site**: [https://table1837tavern.bar](https://table1837tavern.bar)
+*Domain will be active once nameservers are updated*
 
 ## Features
 
@@ -15,9 +20,9 @@
 - **Admin Tools** - OCR document processing and management contact
 
 ### 🚀 **Technical Stack**
-- **Frontend**: Next.js 14, React 18, TypeScript
+- **Frontend**: Next.js 14 (App Router), React 18, TypeScript
 - **Styling**: Tailwind CSS with custom glass-morphism design
-- **Deployment**: Vercel with automatic CI/CD
+- **Deployment**: Multi-platform (Vercel, Netlify, custom hosting)
 - **Performance**: <2s first load, <150KB bundle size
 - **Features**: Voice recognition, mobile-responsive, offline storage
 
@@ -44,16 +49,24 @@ npm run dev
 # Open http://localhost:3000
 ```
 
-### 🚢 **Production Deployment**
+### 🚢 **Production Deployment Options**
+
+#### Option 1: Vercel (Recommended)
 ```bash
-# Build for production
 npm run build
-
-# Start production server
-npm start
-
-# Deploy to Vercel
 npx vercel --prod
+```
+
+#### Option 2: Netlify
+```bash
+npm run build
+npx netlify deploy --prod --dir=.next
+```
+
+#### Option 3: Static Export
+```bash
+npm run build
+npm run export
 ```
 
 ## System Architecture
@@ -86,6 +99,19 @@ npx vercel --prod
 - 🎯 **Lighthouse Score**: >95
 - 📱 **Mobile Performance**: Optimized
 
+## Deployment Troubleshooting
+
+### Common Issues
+1. **Next.js Build Errors**: Use App Router structure in `/app` directory
+2. **Static Export Issues**: Enable `output: 'export'` in next.config.js if needed
+3. **Environment Variables**: Set NEXT_PUBLIC_* variables for client-side access
+
+### Alternative Deployment Methods
+- **GitHub Pages**: Static export with GitHub Actions
+- **Cloudflare Pages**: Direct GitHub integration
+- **Custom VPS**: PM2 with reverse proxy
+- **Docker**: Containerized deployment
+
 ## Contributing
 
 1. Fork the repository
@@ -100,9 +126,10 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-**Table 1837 Team**
-- 📧 Email: info@table1837.com
-- 🌐 Website: [Glen Rock Mill Inn](https://glenrockmillinn.com)
+**Table 1837 Tavern Team**
+- 📧 Email: info@table1837tavern.bar
+- 🌐 Website: [table1837tavern.bar](https://table1837tavern.bar)
+- 🏨 Inn: [Glen Rock Mill Inn](https://glenrockmillinn.com)
 - 📱 Phone: (717) 235-5918
 
 ---
